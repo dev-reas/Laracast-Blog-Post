@@ -22,7 +22,7 @@
             @method('PATCH')
 
             <x-form.input name="password" type="password" required />
-            <x-form.input name="confirm password" type="password" required />
+            <x-form.input name="password_confirmation" type="password" label="Confirm New Password" required />
 
             <div class="flex
                 justify-end space-x-4">

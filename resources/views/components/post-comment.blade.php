@@ -3,7 +3,9 @@
 <x-panel class="bg-gray-50">
     <article class="flex space-x-4">
         <div class="flex-shrink-0">
-            <img src="/images/lary-head.svg" alt="" class="rounded-xl">
+            <x-post-avatar
+                src="{{ $comment->author->image ? asset('storage/' . $comment->author->image) : asset('images/lary-head.svg') }}"
+                onError="this.src='{{ asset('images/lary-head.svg') }}'" />
         </div>
 
         <div class="">

@@ -29,7 +29,9 @@
 
             <footer class="flex justify-between items-center mt-8">
                 <div class="flex items-center text-sm">
-                    <img src="/images/lary-avatar.svg" alt="Lary avatar">
+                    <x-post-avatar
+                        src="{{ $post->author->image ? asset('storage/' . $post->author->image) : asset('images/lary-head.svg') }}"
+                        onError="this.src='{{ asset('images/lary-head.svg') }}'" />
                     <div class="ml-3">
                         <a href="/?author={{ $post->author->username }}">
                             <h5 class="font-bold">{{ $post->author->name }}</h5>

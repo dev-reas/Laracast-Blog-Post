@@ -4,7 +4,9 @@
             @csrf
 
             <header class="flex items-center">
-                <img src="https://i.pravatar.cc/40?u={{ auth()->id() }}" alt="" class="rounded-full">
+                <x-post-avatar
+                    src="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('images/lary-head.svg') }}"
+                    onError="this.src='{{ asset('images/lary-head.svg') }}'" />
 
                 <h2 class="ml-4">Want to participate?</h2>
             </header>

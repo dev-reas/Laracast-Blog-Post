@@ -62,26 +62,43 @@ class SessionsController extends Controller
 
     public function update(User $user)
     {
+        if (request()->filled('password')) {
+            return $this->updatePassword($user);
+        } else {
+            return $this->updateProfile($user);
+        }
+    }
+
+    protected function updateProfile(User $user)
+    {
+        // Validate profile update request data
         $attributes = request()->validate([
             'name' => 'required|max:255',
             'username' => ['required', Rule::unique('users', 'username')->ignore($user)],
             'email' => ['required', Rule::unique('users', 'email')->ignore($user)],
-            'password' => 'nullable|min:6',
             'image' => $user->exists ? ['image'] : ['required', 'image'],
         ]);
 
-        if (isset($attributes['password'])) {
-            $user->update(['password' => bcrypt($attributes['password'])]);
-
-            return back()->with('success', 'Password updated successfully!');
-        }
-
+        // Update profile information (name, username, email, avatar)
         if (request()->hasFile('image')) {
             $attributes['image'] = request()->file('image')->store('profile');
         }
-
         $user->update($attributes);
 
         return redirect('/')->with('success', 'Profile updated!');
+    }
+
+    protected function updatePassword(User $user)
+    {
+        // Validate password update request data
+        request()->validate([
+            'password' => 'required|min:8', // Add any additional password validation rules here
+        ]);
+
+        // Update the password
+        $user->password = bcrypt(request('password'));
+        $user->save();
+
+        return redirect('/')->with('success', 'Password updated!');
     }
 }
